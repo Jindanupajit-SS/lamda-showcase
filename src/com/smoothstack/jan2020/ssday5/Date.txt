@@ -1,0 +1,57 @@
+ ZonedDateTime birthday =
+                ZonedDateTime.ofLocal(
+                        LocalDateTime.of(
+                                // year
+                                1978,
+                                // month
+                                6,
+                                // day
+                                9,
+                                //hour
+                                17,
+                                // min
+                                5,
+                                // sec
+                                12,
+                                // nano
+                                204),
+                        // time zone
+                        ZoneId.of("Asia/Bangkok"),
+                        // offset (preferred)
+                        null);
+
+
+
+        birthday.with(TemporalAdjusters.previous(DayOfWeek.THURSDAY));
+
+        //in
+        Instant instant = Instant.now();
+        instant.atZone(ZoneId.of("Z"));
+
+        birthday.toInstant();
+
+
+        System.out.println("\n\n[ length of each month ]");
+        Year year = Year.of(2020);
+
+        Map<Month, Integer> monthLength = Arrays.stream(Month.values()).sorted()
+                .collect(Collectors.toMap(Function.identity(), m->year.atMonth(m).atEndOfMonth().getDayOfMonth()));
+
+        monthLength.keySet().stream().sorted().forEach((m) -> System.out.printf("%s %d\n", m, monthLength.get(m)));
+
+        Month m = Month.FEBRUARY;
+        YearMonth yearMonth = Year.now().atMonth(m);
+
+        System.out.println("\n\n[ Monday ]");
+        for (int day = 1; day <= yearMonth.atEndOfMonth().getDayOfMonth(); day++) {
+            LocalDate date;
+            if ( DayOfWeek.MONDAY.equals((date = yearMonth.atDay(day)).getDayOfWeek()) )
+                System.out.printf("MONDAY %s\n",date.toString());
+        }
+
+        LocalDate date = LocalDate.now();
+
+        if (date.getDayOfMonth() == 13 &&  DayOfWeek.FRIDAY.equals(date.getDayOfWeek()))
+            System.out.printf("%s is FRIDAY 13th.", date.toString());
+        else
+            System.out.printf("%s is NOT FRIDAY 13th.", date.toString());
